@@ -41,7 +41,7 @@
       "imageMobile": "https://raw.githubusercontent.com/sscjourneytest/sscjourneytest/main/MMH_Pass_Banner.jpg",
       "link": "/buy-premium.html",
       "buttonLabel": "VIEW PLAN",
-      "audience": "free",
+      "audience": "all",
       "visible": true
     },
     {
