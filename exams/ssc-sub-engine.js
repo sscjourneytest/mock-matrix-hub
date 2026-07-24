@@ -92,7 +92,15 @@ async function initExamEngine() {
 
     let examName = _getExamNameFromUrl();
 
-    document.getElementById('grid-sync').innerText = "🔄 Syncing Database...";
+    document.getElementById('grid-sync').innerText = "";
+    document.getElementById('quizGrid').innerHTML = Array(6).fill(`
+        <div class="skeleton-card">
+            <div class="card-info">
+                <div class="skeleton-line skeleton-title"></div>
+                <div class="skeleton-line skeleton-meta"></div>
+            </div>
+            <div class="skeleton-line skeleton-btn"></div>
+        </div>`).join('');
     try {
         const rawUrl = `https://raw.githubusercontent.com/sscjourneytest/sscjourneytest/main/data/${examName}-data.json?t=${Date.now()}`;
         const response = await fetch(rawUrl);
