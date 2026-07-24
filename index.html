@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MOCK MATRIX HUB</title>
+    <meta name="description" content="Free SSC Mock Tests based on 2025 Ediquity pattern. Practice PYQ, Sectional, Subject-wise, and Full Mocks.">
+
+        
+    <script>
+        (function() {
+            // Anti-flash safety check block
+            const savedTheme = localStorage.getItem('mmh_theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                // Adds safety helper classes early
+                document.documentElement.classList.add('dark-mode'); 
+            }
+            const SECRET_SALT = "mmh_vault_key_99";
+            const raw = localStorage.getItem('u_vault');
+            if (raw) {
+                try {
+                    const decrypted = atob(raw).replace(SECRET_SALT, '');
+                    const profile = JSON.parse(decrypted);
+                    if (profile && profile.cache_expiry > Date.now()) {
+                        document.documentElement.classList.add('user-is-logged-in');
+                    }
+                } catch (e) {}
+            }
+        })();
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4B6V3MV51Q"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-4B6V3MV51Q');</script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/auth.js"></script>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2563eb">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+
+    <link href="/css/index.css" rel="stylesheet">
+</head>
+<body>
+    <header class="app-header">
+        <div class="app-header__toprow">
+            <div class="d-flex align-items-center gap-3">
+                <i class="fas fa-bars fs-5" id="menuBtn" style="cursor: pointer;" onclick="toggleSidebar()"></i>
+                <a href="/" class="brand-logo">
+                    <img src="/logo.png" alt="MMH">
+                    <span>MOCK MATRIX <span style="color:var(--text-dark)">HUB</span></span>
+                </a>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <button id="darkModeToggle" onclick="toggleTheme()">🌙</button>
+                <a href="/notifications.html" class="notif-bell-wrap" aria-label="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notif-badge-dot"></span>
+                </a>
+                <div id="authHeaderArea">
+                    <a href="/login.html" class="btn btn-sm btn-primary rounded-pill px-3 fw-bold shadow-sm">LOGIN</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Only rendered/shown when running inside the Rank Score Master
+             app wrapper (AndroidBridge present) — a normal browser or
+             standalone PWA visitor has no "Rank Master" to switch to. -->
+        <div id="appSwitchSlot"></div>
+    </header>
+
+    <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+    <nav id="appSidebar" class="sidebar">
+        <div class="sidebar-header">
+            <div class="d-flex align-items-center gap-3">
+                <div class="user-avatar-circle" id="userAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div>
+                    <h6 class="m-0 fw-bold" id="sidebarUserName">Aspirant</h6>
+                    <div id="sidebarPlanBadge" class="mt-1"></div>
+                </div>
+            </div>
+        </div>
+        <div class="py-3 flex-grow-1 overflow-auto">
+            <a href="/" class="menu-item"><i class="fas fa-house-user"></i> Home</a>
+            <a href="/exams/" class="menu-item"><i class="fas fa-file-signature"></i> Mock Tests</a>
+            <a href="/live-test" class="menu-item"><i class="fas fa-bolt-lightning"></i> Live Mocks</a>
+
+            <div id="adminLinkArea" class="hidden">
+    <a href="/admin-vault.html" class="menu-item admin-btn"><i class="fas fa-user-shield"></i> Admin Panel</a>
+    <a href="/admin-notify.html" class="menu-item admin-btn"><i class="fas fa-tower-broadcast"></i> Send Notification</a>
+            </div>
+            
+            <div id="partnerLinkArea" class="hidden">
+                <a href="/partner-dashboard.html" class="menu-item admin-btn" style="background:#f0f9ff; color:#0369a1;"><i class="fas fa-chart-pie"></i> Earnings</a>
+            </div>
+            <div id="buyPremiumArea">
+                <a href="/buy-premium.html" class="menu-item pro-btn"><i class="fas fa-crown"></i> Buy Premium</a>
+            </div>
+            <div id="partnerApplyArea">
+                <a href="/apply-coupon.html" class="menu-item" style="color:#6366f1;"><i class="fas fa-handshake"></i> Become a Partner</a>
+            </div>
+            <div id="privateChannelArea" class="hidden">
+    <a href="https://t.me/+O4W4bDNdITo1Mzdl" target="_blank" class="menu-item" style="background: #f0f9ff; color: #0088cc; font-weight: 700;">
+        <i class="fab fa-telegram"></i> Private Channel
+    </a>
+</div>
+            <button id="sidebarInstallBtn">
+  <i class="fas fa-download" style="margin-right: 8px;"></i> Install App
+            </button>
+            
+
+            <div class="border-bottom my-2"></div>
+            
+            <a href="/saved" class="menu-item"><i class="fas fa-bookmark"></i> Saved Questions</a>
+
+        
+            <a href="/privacy-policy.html" class="menu-item"><i class="fas fa-shield-halved"></i> Privacy Policy</a>
+            
+            <div id="logoutArea" class="hidden mt-4 px-3">
+                <button onclick="handleLogout()" class="btn btn-outline-danger w-100 fw-bold rounded-3">Logout Account</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="greeting-section">
+        <div class="greeting-text">Welcome, <span id="userGreetName">Aspirant</span></div>
+        <div class="small text-muted fw-bold">ON MOCK MATRIX HUB</div>
+    </div>
+    <div class="banner-container" id="bannerContainer">
+    <div class="banner-wrapper" id="bannerWrapper"></div>
+
+    <div class="banner-nav">
+        <div class="nav-arrow" onclick="moveSlide(-1)"><i class="fas fa-chevron-left"></i></div>
+        <div class="nav-arrow" onclick="moveSlide(1)"><i class="fas fa-chevron-right"></i></div>
+    </div>
+
+    <div class="banner-dots" id="bannerDots"></div>
+</div>
+
+    <div id="pwaInstallModal" class="install-modal">
+  <div class="install-content">
+    <img src="/logo.png" class="install-app-icon" alt="App Icon">
+    <h3>Install App</h3>
+    <p>Install the Mock Matrix Hub app for a faster and smoother testing experience.</p>
+    <div class="install-actions">
+      <button class="btn-install-now" id="doInstall">Install Now</button>
+      <button class="btn-install-cancel" id="closeInstall">Maybe Later</button>
+    </div>
+  </div>
+    </div>
+   
+<div class="whats-new-section" id="whatsNewSection" style="display:none;">
+    <div class="whats-new-heading"><i class="fas fa-bullhorn"></i> What's New?</div>
+    <div class="whats-new-card" id="whatsNewCard"></div>
+</div>
+
+<div class="action-container">
+        <div class="action-row" id="actionRow"></div>
+    </div>
+
+    <div class="rec-section">
+        <div class="section-header">
+            <h3>RECOMMENDED SERIES</h3>
+            <a href="/exams/" class="view-all-btn">VIEW ALL</a>
+        </div>
+        <div class="rec-grid" id="recGrid"></div>
+    </div>
+   
+    <div class="tagline">PRACTICE TO PERFECTION</div>
+
+    <div class="fab-container">
+        <a href="https://whatsapp.com/channel/0029VbC1BdBHgZWkQHWyLh2z" target="_blank" class="fab fab-wa shadow-lg">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="https://t.me/SSC_COMPILATIONS_2025" target="_blank" class="fab fab-tg shadow-lg">
+            <i class="fab fa-telegram-plane"></i>
+        </a>
+    </div>
+
+    <nav class="bottom-nav">
+    <a href="/" class="nav-item active"><i class="fas fa-home-alt"></i><span>HOME</span></a>
+    <a href="/exams/" class="nav-item"><i class="fas fa-file-pen"></i><span>EXAMS</span></a>
+    <a href="/live-test" class="nav-item"><i class="fas fa-bolt"></i><span>LIVE</span></a>
+    <a href="/notifications.html" class="nav-item" style="position:relative;">
+        <i class="fas fa-bell"></i>
+        <span class="notif-badge-dot"></span>
+        <span>ALERTS</span>
+    </a>
+    <a href="/profile" class="nav-item" id="bottomProfileLink"><i class="fas fa-user-circle"></i><span>PROFILE</span></a>
+</nav>
+    
+    <footer style="padding: 40px 20px; background: #fff; border-top: 1px solid #e2e8f0; text-align: center; font-family: 'Inter', sans-serif;">
+    <div style="margin-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">
+        <a href="/about-us.html" 
+           onmouseover="this.style.textDecoration='underline'" 
+           onmouseout="this.style.textDecoration='none'" 
+           style="text-decoration: none; color: #2563eb; font-size: 13px; font-weight: 600; transition: 0.2s;">About Us</a>
+           
+        <a href="/contact-us.html" 
+           onmouseover="this.style.textDecoration='underline'" 
+           onmouseout="this.style.textDecoration='none'" 
+           style="text-decoration: none; color: #2563eb; font-size: 13px; font-weight: 600; transition: 0.2s;">Contact Us</a>
+           
+        <a href="/privacy-policy.html" 
+           onmouseover="this.style.textDecoration='underline'" 
+           onmouseout="this.style.textDecoration='none'" 
+           style="text-decoration: none; color: #2563eb; font-size: 13px; font-weight: 600; transition: 0.2s;">Privacy Policy</a>
+           
+        <a href="/refund-policy.html" 
+           onmouseover="this.style.textDecoration='underline'" 
+           onmouseout="this.style.textDecoration='none'" 
+           style="text-decoration: none; color: #2563eb; font-size: 13px; font-weight: 600; transition: 0.2s;">Refund Policy</a>
+           
+        <a href="/terms-conditions.html" 
+           onmouseover="this.style.textDecoration='underline'" 
+           onmouseout="this.style.textDecoration='none'" 
+           style="text-decoration: none; color: #2563eb; font-size: 13px; font-weight: 600; transition: 0.2s;">Terms & Conditions</a>
+    </div>
+    <p style="color: #94a3b8; font-size: 12px; margin-top: 10px;">© 2026 Mock Matrix Hub. All Rights Reserved.</p>
+    </footer>
+
+    
+
+    <div style="height: 100px;"></div>
+
+    <div id="tgPopupOverlay" class="sidebar-overlay" style="display: none; align-items: center; justify-content: center; z-index: 2000;"></div>
+
+    <div id="salePopupOverlay" class="sidebar-overlay" style="display: none; align-items: center; justify-content: center; z-index: 2000;"></div>
+    
+
+    
+    <script src="/js/home-engine.js"></script>
+    <script src="/js/app-core.js"></script>
+</body>
+</html>
+
+
+
+
