@@ -103,7 +103,6 @@ function renderRecommendations(items) {
 let bannerSlides = [];
 let currentSlide = 0;
 let bannerTimer = null;
-let _bannerIsDesktop = null; // breakpoint the slider was last rendered for
 
 function renderBanners(banners) {
     const wrapper = document.getElementById('bannerWrapper');
@@ -124,7 +123,6 @@ function renderBanners(banners) {
     }
 
     const isDesktop = window.innerWidth >= 992;
-    _bannerIsDesktop = isDesktop;
 
     wrapper.innerHTML = bannerSlides.map((b, i) => `
         <div class="banner-slide${i === 0 ? ' active' : ''}" id="slide${i}">
@@ -283,13 +281,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 window.addEventListener('resize', () => {
-    // Re-pick desktop/mobile banner image only when the breakpoint actually
-    // changes (e.g. real orientation change). On mobile, scrolling the page
-    // fires 'resize' too (address bar showing/hiding) — re-rendering on
-    // every one of those was wiping the slide/timer before it could flip.
-    if (!bannerSlides.length) return;
-    const isDesktopNow = window.innerWidth >= 992;
-    if (isDesktopNow === _bannerIsDesktop) return;
-    renderBanners(bannerSlides);
+    // Re-pick desktop/mobile banner image on orientation/resize changes
+    if (bannerSlides.length) renderBanners(bannerSlides);
 });
-
