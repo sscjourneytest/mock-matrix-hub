@@ -1,4 +1,4 @@
-// exam-engine.js —Mock Page Engine
+// exam-engine.js — SSC Journey Mock Page Engine
 // Cross-device attempt sync: Worker → Firebase user_attempts index (no GitHub)
 
 let EXAM_JSON = null;
@@ -59,7 +59,15 @@ async function initExamEngine() {
         ? window.location.search.slice(1)
         : pathParts[pathParts.length - 2];
 
-    document.getElementById('grid-sync').innerText = "Loading...";
+    document.getElementById('grid-sync').innerText = "";
+    document.getElementById('quizGrid').innerHTML = Array(6).fill(`
+        <div class="skeleton-card">
+            <div class="card-info">
+                <div class="skeleton-line skeleton-title"></div>
+                <div class="skeleton-line skeleton-meta"></div>
+            </div>
+            <div class="skeleton-line skeleton-btn"></div>
+        </div>`).join('');
     try {
         const rawUrl = `https://raw.githubusercontent.com/sscjourneytest/sscjourneytest/main/data/${examName}-data.json?t=${Date.now()}`;
         const response = await fetch(rawUrl);
