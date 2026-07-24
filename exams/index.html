@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Exams Hub | Mock Matrix Hub</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link href="/css/exams.css" rel="stylesheet">
+</head>
+<body>
+
+    <header class="app-header">
+        <button class="back-btn" onclick="handleBack()"><i class="fas fa-arrow-left"></i></button>
+        <h1 class="header-title" id="pageTitle">Exam Categories</h1>
+    </header>
+
+    <div id="view-categories" class="view-screen active">
+        <div class="category-grid"></div>
+    </div>
+
+    <div id="view-subcategories" class="view-screen">
+        <div class="category-grid" id="subcategory-list"></div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="/" class="nav-item"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="/exams/" class="nav-item active"><i class="fas fa-book-open"></i><span>Exams</span></a>
+        <a href="/live-test" class="nav-item"><i class="fas fa-bolt"></i><span>Live</span></a>
+        <a href="/profile" class="nav-item"><i class="fas fa-user-circle"></i><span>Profile</span></a>
+    </nav>
+
+    <script src="/js/exams-index-engine.js"></script>
+</body>
+</html>
