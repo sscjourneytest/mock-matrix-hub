@@ -1,0 +1,40 @@
+name: Fix Exam Asset Paths
+
+# Run manually from the Actions tab, or automatically on every push to main
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'exams/**/index.html'
+
+jobs:
+  fix-paths:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Rewrite CSS/JS paths in every exams/*/index.html
+        run: |
+          find exams -type f -name "index.html" | while read -r file; do
+            echo "Fixing: $file"
+
+            # exam-style.css -> /css/exam-style.css
+            sed -i 's#\(href=["'"'"']\)\.\./exam-style\.css#\1/css/exam-style.css#g' "$file"
+
+            # exam-engine.js -> /js/exam-engine.js
+            sed -i 's#\(src=["'"'"']\)\.\./exam-engine\.js#\1/js/exam-engine.js#g' "$file"
+
+            # ssc-sub-engine.js -> /js/ssc-sub-engine.js (only if present)
+            sed -i 's#\(src=["'"'"']\)\.\./ssc-sub-engine\.js#\1/js/ssc-sub-engine.js#g' "$file"
+          done
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add exams/**/index.html
+          git diff --cached --quiet || git commit -m "Auto-fix: update CSS/JS asset paths in exam pages"
+          git push
