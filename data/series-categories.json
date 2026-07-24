@@ -1,16 +1,6 @@
 {
   "series": [
-    {
-      "id": "mentorship-2026",
-      "title": "CGL / CHSL 2026 MENTORSHIP",
-      "subtitle": "SUBJECT WISE • SECTIONAL • DTPs",
-      "icon": "fas fa-user-graduate",
-      "iconColor": "text-success",
-      "logo": "",
-      "url": "/series/portal.html?mentorship-2026",
-      "badges": ["FREE", "NEW"],
-      "comingSoon": false
-    },
+    
     {
       "id": "atoz-v",
       "title": "A TO Z VOCABULARY Series",
