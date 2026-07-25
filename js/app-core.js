@@ -160,12 +160,14 @@ window.addEventListener('pageshow', (event) => {
 
 // ---------------------------------------------------------------
 // Recover from a killed tab mid-payment: if buy-premium.html set a
-// pending flag before opening the Razorpay modal and the browser
-// reloaded this page before polling finished, force one fresh
+// pending flag before opening the Razorpay modal, force one fresh
 // profile fetch here so premium status isn't stuck showing stale
-// (cached) data for up to 7 days.
+// (cached) data for up to 7 days. Runs once on initial load, and
+// again every time the page becomes visible (tab switch back,
+// browser bfcache restore) — see the pageshow/visibilitychange
+// listeners below.
 // ---------------------------------------------------------------
-(async function checkPendingPayment() {
+async function checkPendingPayment() {
     const raw = localStorage.getItem('mmh_payment_pending');
     if (!raw) return;
 
@@ -193,12 +195,24 @@ window.addEventListener('pageshow', (event) => {
             const cached = getLocalProfile() || {};
             saveLocalProfile({ ...cached, is_paid: true, expires_at: profile.expires_at });
             localStorage.removeItem('mmh_payment_pending');
+            refreshAppUI(); // reflect the now-unlocked premium status immediately
         }
-        // else: leave the flag in place, will retry on next page load
+        // else: leave the flag in place, will retry on next visibility/pageshow
     } catch (e) {
-        // silent — will retry on next load
+        // silent — will retry on next visibility/pageshow
     }
-})();
+}
+
+// Initial run on script load (covers the killed-tab-then-reloaded case)
+checkPendingPayment();
+
+// Re-run every time the tab becomes visible again — covers the
+// stays-alive-but-backgrounded case (user pays in a UPI app, switches
+// back to this same tab) which a one-time load-time check misses.
+window.addEventListener('pageshow', () => checkPendingPayment());
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') checkPendingPayment();
+});
 
 let deferredPrompt;
 const installModal = document.getElementById('pwaInstallModal');
@@ -385,3 +399,4 @@ document.addEventListener('DOMContentLoaded', refreshNotificationBadge);
 window.addEventListener('pageshow', refreshNotificationBadge);
         
         
+
