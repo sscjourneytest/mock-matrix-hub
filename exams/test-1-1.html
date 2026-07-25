@@ -4587,11 +4587,16 @@ function saveAttemptHistory(payload) {
     })
   })
     .then(res => res.json())
-    .then(data => data.atNo || null)
+    .then(data => {
+      if (data.error) alert("save-attempt error: " + data.error);
+      return data.atNo || null;
+    })
     .catch(err => {
       console.error("D1 save-attempt failed:", err);
+      alert("save-attempt fetch failed: " + err.message);
       return null;
     });
+    
 }
 
 // 2. Update an existing attempt row in place (used by
@@ -4617,21 +4622,27 @@ function updateAttemptD1(quizId, emailKey, atNo, score, correct, wrong, sectiona
 // two small indexed lookups instead of pulling every attempt down.
 // mySubmittedAt is no longer needed (D1 ranks by score+time directly)
 // but the 4th param is kept so existing call sites don't need edits.
+
 function getRankAndPercentile(quizId, myScore, myTime, mySubmittedAt) {
   const url = ATTEMPTS_WORKER_URL + "/rank?quizId=" + encodeURIComponent(quizId) +
               "&score=" + encodeURIComponent(myScore) +
               "&timeTaken=" + encodeURIComponent(myTime);
   return fetch(url)
     .then(res => res.json())
-    .then(data => ({
-      rank: data.rank || 0,
-      percentile: data.percentile || "0.00",
-      total: data.total || 0
-    }))
+    .then(data => {
+      if (data.error) alert("rank error: " + data.error);
+      return {
+        rank: data.rank || 0,
+        percentile: data.percentile || "0.00",
+        total: data.total || 0
+      };
+    })
     .catch(err => {
       console.error("D1 rank fetch failed:", err);
+      alert("rank fetch failed: " + err.message);
       return { rank: 0, percentile: "0.00", total: 0 };
     });
+  
 }
 
 // 4. Fetch Top 10 List — now sourced from D1 attempts (ALL attempts,
