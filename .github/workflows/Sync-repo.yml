@@ -1,0 +1,41 @@
+name: Sync to copy repo
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source (this repo)
+        uses: actions/checkout@v4
+        with:
+          path: source
+
+      - name: Checkout target repo
+        uses: actions/checkout@v4
+        with:
+          repository: sscjourneytest/mock-test-web
+          token: ${{ secrets.SYNC_PAT }}
+          path: target
+
+      - name: Mirror files (source -> target)
+        run: |
+          rsync -a --delete \
+            --exclude='.git' \
+            --exclude='.github/workflows' \
+            source/ target/
+
+      - name: Commit and push if changed
+        run: |
+          cd target
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to sync"
+          else
+            git commit -m "Sync from source repo: ${{ github.sha }}"
+            git push
+          fi
