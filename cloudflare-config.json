@@ -1,7 +1,7 @@
 {
   "cgl": "https://mmh-attempts-cgl.rankscoremaster.workers.dev",
   "chsl": "https://mmh-attempts-chsl.YOUR-SUBDOMAIN.workers.dev",
-  "mts": "https://mmh-attempts-mts.YOUR-SUBDOMAIN.workers.dev",
+  "mts": "https://mmh-attempts-cgl.rankscoremaster.workers.dev",
   "selection-post": "https://PASTE-SHARED-WORKER-URL-HERE.workers.dev",
   "gd": "https://PASTE-SHARED-WORKER-URL-HERE.workers.dev",
   "cpo": "https://mmh-attempts-cpo.YOUR-SUBDOMAIN.workers.dev",
