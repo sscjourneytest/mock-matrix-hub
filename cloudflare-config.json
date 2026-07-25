@@ -1,0 +1,13 @@
+{
+  "cgl": "https://mmh-attempts-cgl.YOUR-SUBDOMAIN.workers.dev",
+  "chsl": "https://mmh-attempts-chsl.YOUR-SUBDOMAIN.workers.dev",
+  "mts": "https://mmh-attempts-mts.YOUR-SUBDOMAIN.workers.dev",
+  "selection-post": "https://PASTE-SHARED-WORKER-URL-HERE.workers.dev",
+  "gd": "https://PASTE-SHARED-WORKER-URL-HERE.workers.dev",
+  "cpo": "https://mmh-attempts-cpo.YOUR-SUBDOMAIN.workers.dev",
+  "steno": "https://PASTE-SHARED-WORKER-URL-HERE.workers.dev",
+  "ssc-sub-25": "https://mmh-attempts-ssc-sub.YOUR-SUBDOMAIN.workers.dev",
+  "ntpcg": "https://mmh-attempts-ntpc.YOUR-SUBDOMAIN.workers.dev",
+  "ntpc-ug": "https://PASTE-SHARED-WORKER-URL-HERE.workers.dev",
+  "imps": "https://mmh-attempts-imps.YOUR-SUBDOMAIN.workers.dev"
+}
