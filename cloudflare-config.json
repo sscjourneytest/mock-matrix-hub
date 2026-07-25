@@ -1,5 +1,5 @@
 {
-  "cgl": "https://mmh-attempts-cgl.YOUR-SUBDOMAIN.workers.dev",
+  "cgl": "https://mmh-attempts-cgl.rankscoremaster.workers.dev",
   "chsl": "https://mmh-attempts-chsl.YOUR-SUBDOMAIN.workers.dev",
   "mts": "https://mmh-attempts-mts.YOUR-SUBDOMAIN.workers.dev",
   "selection-post": "https://PASTE-SHARED-WORKER-URL-HERE.workers.dev",
