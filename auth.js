@@ -121,9 +121,19 @@ async function initAuth() {
         const { data: { session } } = await client.auth.getSession();
         user = session ? session.user : null;
     } catch (e) {
-        console.error('Session check failed, retrying once:', e);
+        console.error('Session check failed:', e);
+    }
+
+    // getSession() memoizes its init/refresh attempt per client instance, so
+    // retrying on the SAME client just replays a failed result instead of
+    // re-attempting the network call. Use a fresh client for the retry so it
+    // actually re-reads storage and re-attempts the refresh. Also covers the
+    // case where the first attempt silently resolves to session=null instead
+    // of throwing.
+    if (!user) {
         try {
-            const { data: { session } } = await client.auth.getSession();
+            const retryClient = supabase.createClient(PROXY_URL, SUPABASE_KEY);
+            const { data: { session } } = await retryClient.auth.getSession();
             user = session ? session.user : null;
         } catch (e2) {
             console.error('Session check failed on retry:', e2);
@@ -169,6 +179,19 @@ async function initAuth() {
         }
 
     } else {
+        // Both getSession() attempts failed to confirm a live session — but
+        // that doesn't necessarily mean the user is logged out. If we still
+        // have an unexpired cached profile (up to 7 days old) in storage,
+        // trust it and let the page stay put instead of bouncing to login.
+        // The next page load's getSession() call will reconcile with a live
+        // session as normal; this only covers the transient-network case.
+        const cachedProfile = getLocalProfile();
+        const hasValidCache = cachedProfile && !isCacheExpired();
+
+        if (!isPublicPage && hasValidCache) {
+            return;
+        }
+
         if (!isPublicPage) {
             const returnTo = path + window.location.search;
             window.location.href = "/login.html?redirect=" + encodeURIComponent(returnTo);
