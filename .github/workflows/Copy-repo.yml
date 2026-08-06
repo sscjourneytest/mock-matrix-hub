@@ -3,6 +3,7 @@ name: copy repo
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   sync:
@@ -39,3 +40,4 @@ jobs:
             git commit -m "Sync from source repo: ${{ github.sha }}"
             git push
           fi
+          
