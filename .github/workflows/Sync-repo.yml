@@ -1,4 +1,4 @@
-name: Sync to copy repo
+name: copy repo
 
 on:
   push:
